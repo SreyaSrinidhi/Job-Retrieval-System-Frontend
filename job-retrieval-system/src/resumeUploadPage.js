@@ -22,14 +22,37 @@ function ResumeUpload() {
     setFile(event.target.files[0]);
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!file) {
       alert("Please select a file first.");
       return;
     }
 
     console.log("Uploading:", file);
-    // To be changed later
+    
+    // Create FormData
+    const formData = new FormData();
+    formData.append("file", file); // key must match Flask's request.files["file"]
+
+    try {
+      //NOTE - we should probably store the backend url in some kinda global env var for ease of use
+      const response = await fetch("https://job-retrieval-system-backend.onrender.com/files/upload_resume", {    //NOTE - to test with current changes, edit this to localhost and run locally
+        method: "POST",
+        body: formData, // multipart/form-data is set automatically
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(`Upload failed: ${data.error || response.statusText}`);
+        return;
+      }
+
+      console.log("Upload success:", data);
+    } catch (err) {
+      console.error("Error uploading file:", err);
+      alert("Error uploading file. See console for details.");
+    }
   };
 
   return (
