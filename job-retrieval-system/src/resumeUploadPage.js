@@ -27,6 +27,9 @@ function ResumeUpload() {
     // 1) { skills: [...] }
     // 2) { extracted_skills: [...] }
     // 3) { skill_list: [...] }
+
+
+    //we're looking in "data": {"extracted": {"skills": ["Java",
     if (Array.isArray(d.skills)) return { Skills: d.skills };
     if (Array.isArray(d.extracted_skills)) return { Skills: d.extracted_skills };
     if (Array.isArray(d.skill_list)) return { Skills: d.skill_list };
@@ -95,7 +98,7 @@ function ResumeUpload() {
         throw new Error(json.error || "Upload failed");
       }
 
-      setSkillsJson(json.data);
+      setSkillsJson(json.data?.extracted || null);
     } catch (e) {
       setError(e?.message || "Failed to fetch");
     } finally {
