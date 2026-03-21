@@ -10,6 +10,7 @@ import {
   CircularProgress,
   Divider,
   Chip,
+  TextField,
 } from "@mui/material";
 
 function ResumeUpload() {
@@ -17,6 +18,7 @@ function ResumeUpload() {
   const [skillsJson, setSkillsJson] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [userJobDescription, setUserJobDescription] = useState("");
 
   // Builds a nicer categorized view if your JSON contains categories.
   // Falls back to a single "Skills" list.
@@ -86,8 +88,11 @@ function ResumeUpload() {
     try {
       const formData = new FormData();
       formData.append("resume", file); // backend expects "resume"
+      if (userJobDescription.trim()) {
+        formData.append("job_description", userJobDescription.trim());
+      }
 
-      const res = await fetch("http://127.0.0.1:5000/upload/upload_resume", {
+      const res = await fetch("http://127.0.0.1:5000/upload/upload_resume", {   //NOTE: Currently pointing towards localhost. Should point towards deployment for live
         method: "POST",
         body: formData,
       });
@@ -164,34 +169,15 @@ function ResumeUpload() {
                     Upload resume
                   </Typography>
 
-                  <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems="stretch">
-                    <Button variant="outlined" component="label" fullWidth sx={{ borderRadius: 2 }}>
-                      Choose file
-                      <input
-                        type="file"
-                        hidden
-                        accept=".pdf,.doc,.docx"
-                        onChange={handleFileChange}
-                      />
-                    </Button>
-
-                    <Button
-                      variant="contained"
-                      onClick={handleUpload}
-                      disabled={loading || !file}
-                      fullWidth
-                      sx={{ borderRadius: 2 }}
-                    >
-                      {loading ? (
-                        <Stack direction="row" spacing={1} alignItems="center">
-                          <CircularProgress size={18} color="inherit" />
-                          <span>Extracting…</span>
-                        </Stack>
-                      ) : (
-                        "Extract skills"
-                      )}
-                    </Button>
-                  </Stack>
+                  <Button variant="outlined" component="label" fullWidth sx={{ borderRadius: 2 }}>
+                    Choose file
+                    <input
+                      type="file"
+                      hidden
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleFileChange}
+                    />
+                  </Button>
 
                   <Typography variant="body2" color="text.secondary">
                     {file ? (
@@ -207,6 +193,40 @@ function ResumeUpload() {
                   </Typography>
                 </Stack>
               </Box>
+
+              {/* Job description textbox */}
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Desired Job Type (Optional - Refines Skill Extraction)
+                </Typography>
+                <TextField
+                  multiline
+                  rows={3}
+                  fullWidth
+                  placeholder="Describe the type of job you're interested in..."
+                  value={userJobDescription}
+                  onChange={(e) => setUserJobDescription(e.target.value)}
+                  sx={{ mt: 1 }}
+                />
+              </Box>
+
+              {/* Extract skills button */}
+              <Button
+                variant="contained"
+                onClick={handleUpload}
+                disabled={loading || !file}
+                fullWidth
+                sx={{ borderRadius: 2 }}
+              >
+                {loading ? (
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <CircularProgress size={18} color="inherit" />
+                    <span>Extracting…</span>
+                  </Stack>
+                ) : (
+                  "Extract skills"
+                )}
+              </Button>
 
               {/* Results */}
               {skillsJson && (
