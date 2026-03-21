@@ -89,7 +89,7 @@ function ResumeUpload() {
       const formData = new FormData();
       formData.append("resume", file); // backend expects "resume"
       if (userJobDescription.trim()) {
-        formData.append("job_description", userJobDescription.trim());
+        formData.append("user_job_description", userJobDescription.trim());
       }
 
       const res = await fetch("http://127.0.0.1:5000/upload/upload_resume", {   //NOTE: Currently pointing towards localhost. Should point towards deployment for live
