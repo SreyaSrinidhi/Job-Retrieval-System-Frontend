@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Typography,
   Button,
@@ -5,10 +6,12 @@ import {
   Stack,
   CircularProgress,
 } from "@mui/material";
-import { usePageContext } from "../../pages/uploadPageContext";
+import { usePageContext } from "../pages/uploadPageContext";
 
-function UploadButtonsContainer() {
-    const { file, setFile, setSkillsJson, setMatches, setResumeId, setError, loading, setLoading, userJobDescription } = usePageContext();
+function UploadButtons() {
+    const { setSkillsJson, setMatches, setResumeId, setError, loading, setLoading, userJobDescription } = usePageContext();
+    const [file, setFile] = useState(null);
+    
 
     const handleFileChange = (event) => {
         const f = event.target.files?.[0] || null;
@@ -97,76 +100,76 @@ function UploadButtonsContainer() {
         }
   };
 
-  return (
-    <Box
-        sx={{
-            p: 2.5,
-            borderRadius: 3,
-            border: "1px dashed",
-            borderColor: "divider",
-            bgcolor: "background.paper",
-        }}
-        >
-        <Stack spacing={2}>
-            <Typography variant="subtitle2" color="text.secondary" sx={{ fontWeight: 700 }}>
-            Upload resume
-            </Typography>
+    return (
+        <Box
+            sx={{
+                p: 2.5,
+                borderRadius: 3,
+                border: "1px dashed",
+                borderColor: "divider",
+                bgcolor: "background.paper",
+            }}
+            >
+            <Stack spacing={2}>
+                <Typography variant="subtitle2" color="text.secondary" sx={{ fontWeight: 700 }}>
+                Upload resume
+                </Typography>
 
-            <Stack
-            direction={{ xs: "column", sm: "row" }}
-            spacing={1.5}
-            alignItems="stretch"
-            >
-            <Button
-                variant="outlined"
-                component="label"
-                fullWidth
-                sx={{ borderRadius: 2.5, py: 1.2 }}
-            >
-                Choose file
-                <input
-                type="file"
-                hidden
-                accept=".pdf,.doc,.docx"
-                onChange={handleFileChange}
-                />
-            </Button>
+                <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={1.5}
+                alignItems="stretch"
+                >
+                <Button
+                    variant="outlined"
+                    component="label"
+                    fullWidth
+                    sx={{ borderRadius: 2.5, py: 1.2 }}
+                >
+                    Choose file
+                    <input
+                    type="file"
+                    hidden
+                    accept=".pdf,.doc,.docx"
+                    onChange={handleFileChange}
+                    />
+                </Button>
 
-            <Button
-                variant="contained"
-                onClick={handleUpload}
-                disabled={loading || !file}
-                fullWidth
-                sx={{ borderRadius: 2.5, py: 1.2, fontWeight: 700 }}
-            >
-                {loading ? (
-                <Stack direction="row" spacing={1} alignItems="center">
-                    <CircularProgress size={18} color="inherit" />
-                    <span>Finding jobs...</span>
+                <Button
+                    variant="contained"
+                    onClick={handleUpload}
+                    disabled={loading || !file}
+                    fullWidth
+                    sx={{ borderRadius: 2.5, py: 1.2, fontWeight: 700 }}
+                >
+                    {loading ? (
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <CircularProgress size={18} color="inherit" />
+                        <span>Finding jobs...</span>
+                    </Stack>
+                    ) : (
+                    "Find Jobs"
+                    )}
+                </Button>
                 </Stack>
-                ) : (
-                "Find Jobs"
-                )}
-            </Button>
-            </Stack>
 
-            <Typography variant="body2" color="text.secondary">
-            {file ? (
-                <>
-                Selected:{" "}
-                <Box component="span" sx={{ fontWeight: 700, color: "text.primary" }}>
-                    {file.name}
-                </Box>
-                </>
-            ) : (
-                "No file selected."
-            )}
-            </Typography>
-        </Stack>
-    </Box>
-  );
+                <Typography variant="body2" color="text.secondary">
+                {file ? (
+                    <>
+                    Selected:{" "}
+                    <Box component="span" sx={{ fontWeight: 700, color: "text.primary" }}>
+                        {file.name}
+                    </Box>
+                    </>
+                ) : (
+                    "No file selected."
+                )}
+                </Typography>
+            </Stack>
+        </Box>
+    );
 }
 
-export default UploadButtonsContainer;
+export default UploadButtons;
           
         
