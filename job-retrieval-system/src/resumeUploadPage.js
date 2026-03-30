@@ -124,6 +124,11 @@ function ResumeUpload() {
         formData.append("user_job_description", userJobDescription.trim());
       }
 
+
+      /*
+        OVERALL NOTE - something in this pipeline is moving VERY slow... investigate
+      */
+
       const uploadRes = await fetch("http://127.0.0.1:5000/upload/upload_resume", {
         method: "POST",
         body: formData,
@@ -145,6 +150,7 @@ function ResumeUpload() {
       setSkillsJson(extractedSkills);
       setResumeId(newResumeId);
 
+      //NOTE - socring should probably be processed on backend, not via function call from frontend
       const scoreRes = await fetch(
         `http://127.0.0.1:5000/database/resumes/${newResumeId}/score`,
         {
