@@ -12,43 +12,8 @@ import {
   Chip,
   TextField,
 } from "@mui/material";
-
-function stripHtml(html) {
-  if (!html) return "";
-  const doc = new DOMParser().parseFromString(String(html), "text/html");
-  return doc.body.textContent || "";
-}
-
-function decodeHtmlEntities(text) {
-  if (!text) return "";
-  const textarea = document.createElement("textarea");
-  textarea.innerHTML = String(text);
-  return textarea.value;
-}
-
-function cleanText(text) {
-  if (!text) return "";
-
-  let cleaned = decodeHtmlEntities(stripHtml(String(text)));
-
-  cleaned = cleaned
-    .replace(/\uFFFD/g, "")
-    .replace(/â/g, "'")
-    .replace(/â/g, "'")
-    .replace(/â/g, '"')
-    .replace(/â/g, '"')
-    .replace(/â/g, "-")
-    .replace(/â/g, "-")
-    .replace(/&nbsp;/g, " ")
-    .replace(/\*\*/g, "")
-    .replace(/\[(.*?)\]\((.*?)\)/g, "$1")
-    .replace(/<\/br>/gi, " ")
-    .replace(/<br\s*\/?>/gi, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  return cleaned;
-}
+import { cleanText } from "../utils/htmlCleaning";
+import UploadHeader from "../components/uploadHeader"
 
 function ResumeUpload() {
   const [file, setFile] = useState(null);
@@ -203,7 +168,7 @@ function ResumeUpload() {
             backdropFilter: "blur(8px)",
           }}
         >
-          <Box
+          {/* <Box
             sx={{
               px: { xs: 3, sm: 4 },
               py: { xs: 3, sm: 3.5 },
@@ -220,7 +185,8 @@ function ResumeUpload() {
               Upload a PDF, DOC, or DOCX resume, optionally describe the kind of role you want, and
               get extracted skills plus matching jobs.
             </Typography>
-          </Box>
+          </Box> */}
+          <UploadHeader />
 
           <Box sx={{ p: { xs: 2.5, sm: 4 } }}>
             <Stack spacing={3}>

@@ -1,5 +1,5 @@
 import './App.css';
-import ResumeUploadPage from './resumeUploadPage';
+import ResumeUploadPage from './pages/resumeUploadPage';
 
 function App() {
   return (
