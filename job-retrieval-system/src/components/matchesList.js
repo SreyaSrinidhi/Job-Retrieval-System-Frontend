@@ -67,7 +67,7 @@ function MatchesList() {
                         </Typography>
 
                         <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                            Match Score: <strong>{score}%</strong>
+                            Match Score: <strong>{score}</strong>
                         </Typography>
 
                         {explanation && (
